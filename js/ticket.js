@@ -1,49 +1,35 @@
-// 列表页查询按钮
-var query_btn = document.getElementById('query_ticket');
+var path = window.location.pathname;
 
-// 5秒后重新查询
-function reSearch(ms = 5000) {
-    setTimeout(function(){
-        clickSearch();
-    }, ms);
-}
+var username = '18801909871';
+var password = 'x910230';
 
-// 查看是否有票
-function checkTicket() {
-    try {
-        var train_ids = ["Z164", "Z40"];
+if (path == '/otn/login/init') {    // 登录
+    $('#username').val(username);
+    $('#password').val(password);
+} else if (path == '/otn/queryOrder/init') {    // 已完成订单
+    if ($('#queryStartDate').length > 0) {
+        var beforeDate = new Date();
+        beforeDate.setTime(beforeDate.getTime() - 1000*86400*30);
 
-        for (var i = train_ids.length - 1; i >= 0; i--) {
-            var $tr = $('tr[datatran=' + train_ids[i] + ']').prev();
-
-            var ticket_id = $tr.prop('id').split('_');
-
-            var $td = $('#YZ_' + ticket_id[1]);
-
-            if ($td.text() != '无') {
-                alert('快去抢票啦');
-
-                // var $order_query_btn = $tr.find('td:last a');
-                // $order_query_btn.click();
-                return false;
-            }
+        var month = beforeDate.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
         }
+        var beforeDateStr = beforeDate.getFullYear() + '-' + month + '-' + beforeDate.getDate();
+        $('#queryStartDate').val(beforeDateStr);
 
-        console.log('还是没票呀');
-    } catch (err) {
-        console.log(err);
+        var my_order_btn = document.getElementById('querymyorderbutton');
+        my_order_btn.click();
+    }
+} else if (path == '/otn/confirmPassenger/initDc') {    // 选中乘客
+    function clickMember() {
+        if ($('#normalPassenger_0').length > 0) {
+            var member_btn = document.getElementById('normalPassenger_0');
+            member_btn.click();
+        } else {
+            setTimeout(clickMember, 2000)
+        }
     }
 
-    reSearch();
+    clickMember();
 }
-
-// 模拟点击查询按钮
-function clickSearch() {
-    query_btn.click();
-
-    setTimeout(function(){
-        checkTicket();
-    }, 1000);
-}
-
-reSearch();

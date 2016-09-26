@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "青弟抢票助手",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "青弟专用抢票助手",
     "icons": {
         "16": "images/icon16.png",
@@ -18,7 +18,11 @@
     },
     "content_scripts": [
         {
-            "matches": ["https://kyfw.12306.cn/otn/leftTicket/init"],
+            "matches": [
+                "https://kyfw.12306.cn/otn/login/init", // 登陆
+                "https://kyfw.12306.cn/otn/confirmPassenger/initDc", // 选中乘客
+                "https://kyfw.12306.cn/otn/queryOrder/init"     // 已完成订单，改签专用
+            ],
             "js": [
                 "js/jquery-3.1.0.min.js",
                 "js/ticket.js"
